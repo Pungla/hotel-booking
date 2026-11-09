@@ -3,21 +3,6 @@
 Учебный проект: REST API для бронирования отелей на Spring Boot 3.5 и Spring Cloud.
 Четыре отдельных приложения, у каждого сервиса своя база H2 в памяти.
 
-```
-                       ┌──────────────────────┐
-  клиент ── JWT ──────▶│ API Gateway  :8080   │
-                       └──────┬────────┬──────┘
-          /api/bookings/**    │        │   /api/hotels/**, /api/rooms/...
-                              ▼        ▼
-            ┌──────────────────┐   ┌──────────────────────┐
-            │ Booking  :8081   │──▶│ Hotel Management     │
-            │ пользователи,    │   │ :8082                │
-            │ JWT, брони       │   │ отели, номера,       │
-            │ (H2 bookingdb)   │   │ блокировки дат (H2)  │
-            └────────┬─────────┘   └──────────┬───────────┘
-                     │   регистрация / поиск  │
-                     └────────▶ Eureka :8761 ◀┘
-```
 
 | Модуль            | Порт | Что делает |
 |-------------------|------|------------|
@@ -61,12 +46,6 @@ Swagger UI (кнопка **Authorize** – вставить токен из `/us
 
 - booking-service: http://localhost:8081/swagger-ui.html
 - hotel-service: http://localhost:8082/swagger-ui.html
-
-> **Windows.** Если сервис падает при старте с `Unable to establish loopback connection`
-> (бывает, когда в пути к TEMP есть пробел) или запросы падают с `Permission denied: no further information`
-> (VPN или антивирус режет IPv6), добавьте флаги JVM:
-> `java -Djdk.net.unixdomain.tmpdir=C:\temp -Djava.net.preferIPv4Stack=true -jar ...`.
-> Для `mvn test` и `mvn spring-boot:run` они уже прописаны в корневом `pom.xml`.
 
 ## Как пользоваться
 
