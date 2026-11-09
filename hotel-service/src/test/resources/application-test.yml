@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:hoteltest;DB_CLOSE_DELAY=-1;LOCK_TIMEOUT=10000
+
+eureka:
+  client:
+    enabled: false
+
+app:
+  seed-data: false

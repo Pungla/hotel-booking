@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:bookingtest;DB_CLOSE_DELAY=-1
+
+eureka:
+  client:
+    enabled: false
+
+# в тестах hotel-service - заглушка WireMock, адрес подставляется в тесте
+hotel:
+  use-discovery: false
+  timeout-ms: 500
+  max-attempts: 3
+  backoff-ms: 50
+  backoff-multiplier: 2.0

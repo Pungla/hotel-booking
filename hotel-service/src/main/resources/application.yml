@@ -1,0 +1,37 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: hotel-service
+  datasource:
+    # LOCK_TIMEOUT побольше, чтобы параллельные брони одного номера дожидались блокировки
+    url: jdbc:h2:mem:hoteldb;DB_CLOSE_DELAY=-1;LOCK_TIMEOUT=10000
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+
+# общий секрет для подписи JWT (такой же в booking-service), минимум 32 символа
+jwt:
+  secret: ${JWT_SECRET:hotel-booking-demo-secret-key-change-me-2026}
+
+app:
+  seed-data: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+
+logging:
+  pattern:
+    level: "%5p [bookingId=%X{bookingId:-} requestId=%X{requestId:-}]"

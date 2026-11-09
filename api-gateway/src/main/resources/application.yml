@@ -1,0 +1,37 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            # /api/bookings/user/auth -> booking-service /user/auth и т.д.
+            - id: booking-service
+              uri: lb://booking-service
+              predicates:
+                - Path=/api/bookings/**
+              filters:
+                - StripPrefix=2
+
+            - id: hotel-service-hotels
+              uri: lb://hotel-service
+              predicates:
+                - Path=/api/hotels,/api/hotels/**
+
+            # наружу отдаём только публичные пути номеров,
+            # /api/rooms/{id}/confirm-availability и /api/rooms/{id}/release через шлюз недоступны
+            - id: hotel-service-rooms
+              uri: lb://hotel-service
+              predicates:
+                - Path=/api/rooms,/api/rooms/recommend,/api/rooms/stats,/api/rooms/{id}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
